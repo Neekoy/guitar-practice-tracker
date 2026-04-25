@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guitar Practice</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🎸 Guitar Practice</h1>
+    <nav>
+      <button class="nav-btn active" data-tab="timer">Timer</button>
+      <button class="nav-btn" data-tab="stats">Stats</button>
+      <button class="nav-btn" data-tab="history">History</button>
+      <button class="nav-btn" data-tab="tempo">Tempo Tracker</button>
+      <button class="nav-btn" data-tab="manage">Manage Items</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- TIMER TAB -->
+    <section id="tab-timer" class="tab active">
+      <div class="timer-card">
+        <div class="timer-display" id="timer-display">00:00:00</div>
+        <div class="timer-controls">
+          <button class="btn btn-green" id="btn-start">Start</button>
+          <button class="btn btn-purple" id="btn-pause" disabled>Pause</button>
+          <button class="btn btn-red" id="btn-end" disabled>End Session</button>
+        </div>
+      </div>
+
+      <div class="session-items-card">
+        <h2>What are you practicing?</h2>
+        <div id="item-checklist" class="item-grid"></div>
+      </div>
+
+      <div id="session-confirm" class="confirm-card hidden">
+        <h2>Session Complete</h2>
+        <p id="session-summary"></p>
+        <div class="confirm-actions">
+          <button class="btn btn-green" id="btn-save">Save Session</button>
+          <button class="btn btn-red" id="btn-discard">Discard</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS TAB -->
+    <section id="tab-stats" class="tab">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Time</div>
+          <br>
+          <div class="stat-value" id="stat-total-time" style="font-size:1.6rem">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Sessions This Week</div>
+          <div class="stat-value" id="stat-week-sessions">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Current Streak</div>
+          <div class="stat-value" id="stat-streak">—</div>
+          <div class="stat-sub">consecutive days</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Longest Streak</div>
+          <div class="stat-value" id="stat-longest-streak">—</div>
+          <div class="stat-sub">consecutive days</div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h2>This Week — Practice Time per Day</h2>
+        <div class="chart-wrap">
+          <canvas id="chart-week"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h2>This Year — Hours per Month</h2>
+        <div class="chart-wrap">
+          <canvas id="chart-year"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORY TAB -->
+    <section id="tab-history" class="tab">
+      <div class="history-header">
+        <h2>Session History</h2>
+        <span id="history-count" class="history-count"></span>
+      </div>
+      <table class="history-table">
+        <thead>
+          <tr><th>Date</th><th>Duration</th><th>Practiced</th><th></th></tr>
+        </thead>
+        <tbody id="history-body"></tbody>
+      </table>
+      <div id="history-pagination" class="pagination"></div>
+    </section>
+
+    <!-- TEMPO TRACKER TAB -->
+    <section id="tab-tempo" class="tab">
+
+      <!-- Log a BPM entry -->
+      <div class="tempo-card">
+        <h2>Log Exercise BPM</h2>
+        <div class="tempo-log-form">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="tempo-date" />
+          </div>
+          <div class="form-group">
+            <label>Exercise</label>
+            <select id="tempo-exercise"></select>
+          </div>
+          <div class="form-group">
+            <label>Max BPM</label>
+            <input type="number" id="tempo-bpm" min="1" max="400" placeholder="e.g. 120" />
+          </div>
+          <button class="btn btn-green" id="btn-log-tempo">Log</button>
+        </div>
+      </div>
+
+      <!-- Last 7 records per exercise -->
+      <div class="tempo-card" id="tempo-recent-card">
+        <h2>Recent Records — Last 7 per Exercise</h2>
+        <div id="tempo-recent-table"></div>
+      </div>
+
+      <!-- Progress charts grouped by type -->
+      <div id="tempo-charts"></div>
+
+      <!-- Recent log entries -->
+      <div class="tempo-card">
+        <h2>Recent Entries</h2>
+        <table class="history-table" id="tempo-log-table">
+          <thead><tr><th>Date</th><th>Exercise</th><th>Type</th><th>BPM</th><th></th></tr></thead>
+          <tbody id="tempo-log-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Manage Exercises -->
+      <div class="tempo-card">
+        <h2>Manage Exercises</h2>
+        <div class="manage-add">
+          <input type="text" id="ex-name-input" placeholder="Exercise name…" maxlength="80" />
+          <input type="text" id="ex-type-input" placeholder="Type (e.g. Scales)…" maxlength="60" />
+          <button class="btn btn-green" id="btn-add-exercise">Add</button>
+        </div>
+        <ul id="exercises-list" class="items-list"></ul>
+      </div>
+
+    </section>
+
+    <!-- MANAGE ITEMS TAB -->
+    <section id="tab-manage" class="tab">
+      <h2>Practice Items</h2>
+      <div class="manage-add">
+        <input type="text" id="new-item-input" placeholder="New item name…" maxlength="60" />
+        <button class="btn btn-green" id="btn-add-item">Add</button>
+      </div>
+      <ul id="items-list" class="items-list"></ul>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
