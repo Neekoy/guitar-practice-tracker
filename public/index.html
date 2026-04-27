@@ -35,18 +35,40 @@
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
+
+    @keyframes nebula-pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.75; transform: scale(1.08); }
+    }
+    @keyframes grid-drift {
+      from { background-position: 0px 0px; }
+      to   { background-position: 40px 40px; }
+    }
+
     body {
-      background:
-        radial-gradient(ellipse 70% 55% at 15% 0%,   oklch(0.38 0.18 295 / 0.60) 0%, transparent 60%),
-        radial-gradient(ellipse 55% 45% at 88% 90%,  oklch(0.30 0.15 315 / 0.55) 0%, transparent 58%),
-        radial-gradient(ellipse 40% 30% at 60% 50%,  oklch(0.20 0.10 280 / 0.30) 0%, transparent 70%),
-        oklch(0.08 0.020 285);
+      background: oklch(0.06 0.015 275);
       color: var(--text);
       font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
       display: flex;
       height: 100vh;
       overflow: hidden;
+      position: relative;
     }
+
+    /* Perspective grid overlay */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(oklch(0.65 0.15 285 / 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, oklch(0.65 0.15 285 / 0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: grid-drift 10s linear infinite;
+      mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .sidebar, .main { position: relative; z-index: 1; }
 
     /* ── Sidebar ── */
     .sidebar {
@@ -500,6 +522,12 @@
   </style>
 </head>
 <body>
+
+<!-- Background nebula orbs -->
+<div style="position:fixed;z-index:0;pointer-events:none;border-radius:50%;width:200vw;height:100vh;top:-40vh;left:-50%;background:radial-gradient(ellipse at 40% 40%, oklch(0.50 0.22 290 / 0.60) 0%, oklch(0.30 0.15 310 / 0.20) 40%, transparent 70%);animation:nebula-pulse 10s ease-in-out infinite;"></div>
+<div style="position:fixed;z-index:0;pointer-events:none;border-radius:50%;width:180vw;height:90vh;bottom:-30vh;right:-60%;background:radial-gradient(ellipse at 60% 60%, oklch(0.40 0.20 330 / 0.55) 0%, oklch(0.25 0.12 280 / 0.20) 40%, transparent 70%);animation:nebula-pulse 13s ease-in-out infinite reverse;"></div>
+<div style="position:fixed;z-index:0;pointer-events:none;border-radius:50%;width:80vw;height:60vh;top:20vh;left:20%;background:radial-gradient(ellipse at 50% 50%, oklch(0.35 0.18 260 / 0.35) 0%, transparent 65%);animation:nebula-pulse 16s ease-in-out infinite 3s;"></div>
+<div style="position:fixed;z-index:0;pointer-events:none;border-radius:50%;width:60vw;height:50vh;top:5vh;right:0;background:radial-gradient(ellipse at 50% 50%, oklch(0.55 0.16 185 / 0.20) 0%, transparent 65%);animation:nebula-pulse 11s ease-in-out infinite 1s;"></div>
 
 <!-- ── Sidebar ── -->
 <nav class="sidebar">
